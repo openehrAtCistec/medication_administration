@@ -80,7 +80,7 @@ Standards for medication and medical device records – technical annex [Interne
 		["original_namespace"] = <"org.openehr">
 		["original_publisher"] = <"openEHR Foundation">
 		["custodian_namespace"] = <"org.openehr">
-		["MD5-CAM-1.0.1"] = <"bb893d41f9ab196c2acaefe299e22082">
+		["MD5-CAM-1.0.1"] = <"e18b9b4e702ac729ab626e265ae964dc">
 		["build_uid"] = <"7dff6893-de91-40a2-965d-23f5e776be10">
 		["revision"] = <"0.0.1-alpha">
 	>
@@ -100,39 +100,63 @@ definition
 						list = <
 							["1"] = <
 								units = <"{bag}">
+								units_system = <"http://unitsofmeasure.org">
+								units_display_name = <"{bag}">
 							>
 							["2"] = <
 								units = <"{gtt}">
+								units_system = <"http://unitsofmeasure.org">
+								units_display_name = <"{gtt}">
 							>
 							["3"] = <
 								units = <"{pc}">
+								units_system = <"http://unitsofmeasure.org">
+								units_display_name = <"{pc}">
 							>
 							["4"] = <
 								units = <"{pfs}">
+								units_system = <"http://unitsofmeasure.org">
+								units_display_name = <"{pfs}">
 							>
 							["5"] = <
 								units = <"{syringe}">
+								units_system = <"http://unitsofmeasure.org">
+								units_display_name = <"{syringe}">
 							>
 							["6"] = <
 								units = <"{tab}">
+								units_system = <"http://unitsofmeasure.org">
+								units_display_name = <"{tab}">
 							>
 							["7"] = <
 								units = <"[arb'U]">
+								units_system = <"http://unitsofmeasure.org">
+								units_display_name = <"arb. unit">
 							>
 							["8"] = <
 								units = <"g">
+								units_system = <"http://unitsofmeasure.org">
+								units_display_name = <"g">
 							>
 							["9"] = <
 								units = <"mg">
+								units_system = <"http://unitsofmeasure.org">
+								units_display_name = <"mg">
 							>
 							["10"] = <
 								units = <"mL">
+								units_system = <"http://unitsofmeasure.org">
+								units_display_name = <"ml">
 							>
 							["11"] = <
 								units = <"ug">
+								units_system = <"http://unitsofmeasure.org">
+								units_display_name = <"μg">
 							>
 							["12"] = <
 								units = <"uL">
+								units_system = <"http://unitsofmeasure.org">
+								units_display_name = <"µL">
 							>
 						>
 					>
