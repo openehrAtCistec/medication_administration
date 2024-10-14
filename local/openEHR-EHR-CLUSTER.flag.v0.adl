@@ -1,0 +1,377 @@
+archetype (adl_version=1.4; uid=b4248717-b0aa-47c5-b247-a69fd05b6389)
+	openEHR-EHR-CLUSTER.flag.v0
+
+concept
+	[at0000]
+
+language
+	original_language = <[ISO_639-1::en]>
+	translations = <
+		["de"] = <
+			language = <[ISO_639-1::de]>
+			author = <
+			>
+		>
+	>
+
+description
+	original_author = <
+		["date"] = <"2024-07-31">
+		["name"] = <"Lucas Antelo">
+		["organisation"] = <"Cistec AG">
+		["email"] = <"lucas.antelo@cistec.com">
+	>
+	lifecycle_state = <"unmanaged">
+	details = <
+		["de"] = <
+			language = <[ISO_639-1::de]>
+			copyright = <"© openEHR Foundation">
+		>
+		["en"] = <
+			language = <[ISO_639-1::en]>
+		>
+	>
+	other_details = <
+		["licence"] = <"This work is licensed under the Creative Commons Attribution-ShareAlike 4.0 International License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/4.0/.">
+		["custodian_organisation"] = <"openEHR Foundation">
+		["original_namespace"] = <"org.openehr">
+		["original_publisher"] = <"openEHR Foundation">
+		["custodian_namespace"] = <"org.openehr">
+		["MD5-CAM-1.0.1"] = <"0058f64cab614d1eb884bd01f2f7020c">
+		["build_uid"] = <"832bf505-9642-35be-befc-8acb5192491d">
+	>
+
+definition
+	CLUSTER[at0000] matches {    -- Flag
+		items cardinality matches {1..*; unordered} matches {
+			ELEMENT[at0014] matches {    -- Code
+				value matches {
+					DV_CODED_TEXT matches {*}
+					DV_TEXT matches {*}
+				}
+			}
+			ELEMENT[at0037] occurrences matches {0..1} matches {    -- Cohort
+				value matches {
+					DV_TEXT matches {*}
+					DV_CODED_TEXT matches {*}
+				}
+			}
+			ELEMENT[at0015] occurrences matches {0..1} matches {    -- Description
+				value matches {
+					DV_TEXT matches {*}
+				}
+			}
+			ELEMENT[at0020] matches {    -- Status
+				value matches {
+					DV_CODED_TEXT matches {
+						defining_code matches {
+							[local::
+							at0021,    -- active
+							at0022,    -- inactive
+							at0023;    -- entered-in-error
+							at0021]
+						}
+					}
+				}
+			}
+			ELEMENT[at0024] occurrences matches {0..*} matches {    -- Category
+				value matches {
+					DV_TEXT matches {*}
+					DV_CODED_TEXT matches {
+						defining_code matches {
+							[local::
+							at0025,    -- diet
+							at0026,    -- drug
+							at0027,    -- lab
+							at0028,    -- admin
+							at0029,    -- contact
+							at0030,    -- clinical
+							at0031,    -- behavioral
+							at0032,    -- research
+							at0033,    -- advance-directive
+							at0034]    -- safety
+						}
+					}
+				}
+			}
+			ELEMENT[at0035] matches {    -- Valid period start
+				value matches {
+					DV_DATE_TIME matches {
+						value matches {yyyy-mm-ddThh:mm:ss}
+					}
+				}
+			}
+			ELEMENT[at0036] occurrences matches {0..1} matches {    -- Valid period end
+				value matches {
+					DV_DATE_TIME matches {
+						value matches {yyyy-mm-ddThh:mm:ss}
+					}
+				}
+			}
+			ELEMENT[at0038] occurrences matches {0..1} matches {    -- Scheduled review
+				value matches {
+					DV_DATE_TIME matches {
+						value matches {yyyy-mm-ddThh:mm:ss}
+					}
+				}
+			}
+			ELEMENT[at0039] occurrences matches {0..1} matches {    -- Comment
+				value matches {
+					DV_TEXT matches {*}
+				}
+			}
+			allow_archetype CLUSTER[at0040] occurrences matches {0..*} matches {    -- Additional details
+				include
+					archetype_id/value matches {/.*/}
+			}
+		}
+	}
+
+ontology
+	term_definitions = <
+		["en"] = <
+			items = <
+				["at0000"] = <
+					text = <"Flag">
+					description = <"The \"Flag\" cluster is designed to capture significant warnings or notifications within the patient record or related context. It includes fields to identify and describe the flag, its status, category, validity period, and other relevant details. This cluster ensures critical issues are prominently displayed and managed, providing essential information to clinicians and other care providers. This cluster is similar to EVALUATION.precaution.v1, but more flexibel. In addition, this cluster can be mapped onto the FHIR R5 resource Flag, based on the following mappings from this cluster to the FHIR resource Flag (Attribute in cluster (Cardinality) -> Field in resource (Cardinality)):
+
+GUID (1..1) -> identifier (0..*)
+Status (1..1) -> status (1:1)
+Category (0..*) -> category (0..*)
+Code (1..1) -> code (1:1)
+Description (0..1) -> text(0:1)
+ehrID.patient (1..1) -> subject (1:1)
+Valid period start (1..1) -> period.start (0..1)
+Valid period end (0..1) -> period.end (0..1)
+Encounter (0..*) -> encounter (0..1)
+Composer (1..1) -> author (0..1)">
+				>
+				["at0014"] = <
+					text = <"Code">
+					description = <"This field is identical to the field code in the FHIR R5 resource Flag. A concise identifier representing the condition or issue flagged. This field allows for free-text entry to capture conditions not included in a value set. 
+
+This cluster does not include the relevant SNOMED CT codes defined by the requirements of the analyzed use cases. This shall be done when modeling the template. ">
+					comment = <"FHIR R5 Flag provides for the attribute code as example the following value set: https://hl7.org/fhir/valueset-flag-code.html">
+				>
+				["at0015"] = <
+					text = <"Description">
+					description = <"A detailed narrative providing additional context or information about the condition or issue flagged. This description complements the value in the \"Name\" field and can be displayed upon request to provide more comprehensive details to the user. 
+
+In FHIR R5 this field is represented by the attribute \"text\" given the parent of the resource Flag ">
+				>
+				["at0020"] = <
+					text = <"Status">
+					description = <"The current status of the flag, indicating whether it is active, inactive, or entered-in-error. This field is identical to the field status in the FHIR R5 resource Flag and is also constrained to the predefined value set defined in FHIR. Source:
+
+https://hl7.org/fhir/valueset-flag-status.html
+
+">
+				>
+				["at0021"] = <
+					text = <"active">
+					description = <"A current flag that should be displayed to a user. A system may use the category to determine which user roles should view the flag.">
+				>
+				["at0022"] = <
+					text = <"inactive">
+					description = <"The flag no longer needs to be displayed.">
+				>
+				["at0023"] = <
+					text = <"entered-in-error">
+					description = <"The flag was added in error and should no longer be displayed.">
+				>
+				["at0024"] = <
+					text = <"Category">
+					description = <"The category of the flag, indicating the type of issue or notification. This field is identical to the field category in the FHIR R5 resource Flag. The given value set is drawn from the predefined value set defined in FHIR, which is not binding and only represent examples. Source:
+
+https://hl7.org/fhir/valueset-flag-category.html">
+				>
+				["at0025"] = <
+					text = <"diet">
+					description = <"Flags related to the subject's dietary needs.">
+				>
+				["at0026"] = <
+					text = <"drug">
+					description = <"Flags related to the subject's medications.">
+				>
+				["at0027"] = <
+					text = <"lab">
+					description = <"Flags related to performing laboratory tests and related processes (e.g. phlebotomy).">
+				>
+				["at0028"] = <
+					text = <"admin">
+					description = <"Flags related to administrative and financial processes.">
+				>
+				["at0029"] = <
+					text = <"contact">
+					description = <"Flags related to coming into contact with the patient.">
+				>
+				["at0030"] = <
+					text = <"clinical">
+					description = <"Flags related to the subject's clinical data.">
+				>
+				["at0031"] = <
+					text = <"behavioral">
+					description = <"Flags related to behavior.">
+				>
+				["at0032"] = <
+					text = <"research">
+					description = <"Flags related to research.">
+				>
+				["at0033"] = <
+					text = <"advance-directive">
+					description = <"Flags related to subject's advance directives.">
+				>
+				["at0034"] = <
+					text = <"safety">
+					description = <"Flags related to safety precautions.">
+				>
+				["at0035"] = <
+					text = <"Valid period start">
+					description = <"The start date and time from which this flag is valid. This field is mandatory and should be instantiated with at least the current date and time (Datetime.now(yyyy-MM-ddThh:mm:ss)) or earlier. Future dates are permissible without warnings.
+">
+				>
+				["at0036"] = <
+					text = <"Valid period end">
+					description = <"The end date and time until which this flag is valid. This field is optional and must be later than \"Valid period start\". If set to a future date, the user shall be alerted that the value lies in the future and that the flag is deemed \"active\" until then. If the status is set to \"inactive\" or \"entered-in-error\", this field shall be instantiated with the date of the respective update.">
+				>
+				["at0037"] = <
+					text = <"Cohort">
+					description = <"This field is not available in the FHIR R5 resource Flag and specifies the cohort or group to which this flag applies. This could include information related to a study drug, clinical trial, quarantine measures, or other relevant groupings where such information is crucial for patient care and management.
+">
+				>
+				["at0038"] = <
+					text = <"Scheduled review">
+					description = <"The next date and time this flag is scheduled to be reviewed. This field is optional. If set, it specifies when the flag should be reviewed to validate its continued relevance. This review is required only if the flag is set to \"active\". Upon review, this field may be updated with a new date and time or left empty.">
+				>
+				["at0039"] = <
+					text = <"Comment">
+					description = <"Allows for the entry of any unstructured data or notes not covered by the other specified attributes. This field provides flexibility to document any additional relevant information or context about the flag.">
+				>
+				["at0040"] = <
+					text = <"Additional details">
+					description = <"Allows for the entry of any structured data not covered by the other specified attributes. This field provides the capability to capture additional structured information that is relevant to the flag but does not fit within the existing fields.">
+				>
+			>
+		>
+		["de"] = <
+			items = <
+				["at0000"] = <
+					text = <"Flag">
+					description = <"Der \"Flag\"-Cluster dient zur Erfassung bedeutender Warnungen oder Benachrichtigungen innerhalb der Patientenakte oder eines damit verbundenen Kontexts. Er enthält Felder zur Identifizierung und Beschreibung der Flagge, ihres Status, ihrer Kategorie, des Gültigkeitszeitraums und anderer relevanter Details. Dieser Cluster stellt sicher, dass kritische Themen deutlich hervorgehoben und verwaltet werden, um wesentliche Informationen für Ärzte und andere Pflegekräfte bereitzustellen. Dieser Cluster ist ähnlich wie EVALUATION.precaution.v1, jedoch flexibler. Außerdem kann dieser Cluster auf die FHIR R5-Ressource Flag abgebildet werden, basierend auf den folgenden Zuordnungen von diesem Cluster zur FHIR-Ressource Flag (Attribut im Cluster (Kardinalität) -> Feld in Ressource (Kardinalität)):
+
+GUID (1..1) -> identifier (0..*)
+Status (1..1) -> status (1:1)
+Kategorie (0..) -> category (0..)
+Code (1..1) -> code (1:1)
+Beschreibung (0..1) -> text (0:1)
+ehrID.patient (1..1) -> subject (1:1)
+Gültigkeitszeitraum Start (1..1) -> period.start (0..1)
+Gültigkeitszeitraum Ende (0..1) -> period.end (0..1)
+Begegnung (0..*) -> encounter (0..1)
+Verfasser (1..1) -> author (0..1)*">
+				>
+				["at0014"] = <
+					text = <"Code">
+					description = <"Dieses Feld ist identisch mit dem Feld \"code\" in der FHIR R5-Ressource Flag. Es stellt einen prägnanten Bezeichner dar, der den gekennzeichneten Zustand oder das Problem repräsentiert. Dieses Feld ermöglicht die Eingabe von Freitext, um Bedingungen zu erfassen, die nicht in einem Wertebereich enthalten sind.
+
+Dieser Cluster enthält nicht die relevanten SNOMED CT-Codes, die durch die Anforderungen der analysierten Anwendungsfälle definiert sind. Dies wird beim Modellieren der Vorlage erfolgen.">
+					comment = <"FHIR R5 Flag bietet für das Attribut \"code\" als Beispiel den folgenden Wertebereich: https://hl7.org/fhir/valueset-flag-code.html">
+				>
+				["at0015"] = <
+					text = <"Bescheibung">
+					description = <"Eine ausführliche Beschreibung, die zusätzlichen Kontext oder Informationen zu dem gekennzeichneten Zustand oder Problem liefert. Diese Beschreibung ergänzt den Wert im Feld \"Name\" und kann auf Anfrage angezeigt werden, um dem Benutzer umfassendere Details bereitzustellen.
+
+In FHIR R5 wird dieses Feld durch das Attribut \"text\" repräsentiert, das dem übergeordneten Element der Ressource Flag zugeordnet ist.">
+				>
+				["at0020"] = <
+					text = <"Status">
+					description = <"Der aktuelle Status des Flags, der anzeigt, ob sie aktiv, inaktiv oder irrtümlich eingetragen ist. Dieses Feld ist identisch mit dem Feld \"status\" in der FHIR R5-Ressource Flag und ist ebenfalls auf den vordefinierten Wertebereich eingeschränkt, der in FHIR definiert ist. Quelle:
+
+https://hl7.org/fhir/valueset-flag-status.html">
+				>
+				["at0021"] = <
+					text = <"*active (en)">
+					description = <"*A current flag that should be displayed to a user. A system may use the category to determine which user roles should view the flag. (en)">
+				>
+				["at0022"] = <
+					text = <"*inactive (en)">
+					description = <"*The flag no longer needs to be displayed. (en)">
+				>
+				["at0023"] = <
+					text = <"*entered-in-error (en)">
+					description = <"*The flag was added in error and should no longer be displayed. (en)">
+				>
+				["at0024"] = <
+					text = <"Kategorie">
+					description = <"Die Kategorie des Flags, die den Typ des Problems oder der Benachrichtigung angibt. Dieses Feld ist identisch mit dem Feld \"category\" in der FHIR R5-Ressource Flag. Der angegebene Wertebereich stammt aus dem vordefinierten Wertebereich, der in FHIR definiert ist, jedoch nicht bindend ist und nur Beispiele darstellt. Quelle:
+
+https://hl7.org/fhir/valueset-flag-category.html">
+				>
+				["at0025"] = <
+					text = <"*diet (en)">
+					description = <"*Flags related to the subject's dietary needs. (en)">
+				>
+				["at0026"] = <
+					text = <"*drug (en)">
+					description = <"*Flags related to the subject's medications. (en)">
+				>
+				["at0027"] = <
+					text = <"*lab (en)">
+					description = <"*Flags related to performing laboratory tests and related processes (e.g. phlebotomy). (en)">
+				>
+				["at0028"] = <
+					text = <"*admin (en)">
+					description = <"*Flags related to administrative and financial processes. (en)">
+				>
+				["at0029"] = <
+					text = <"*contact (en)">
+					description = <"*Flags related to coming into contact with the patient. (en)">
+				>
+				["at0030"] = <
+					text = <"*clinical (en)">
+					description = <"*Flags related to the subject's clinical data. (en)">
+				>
+				["at0031"] = <
+					text = <"*behavioral (en)">
+					description = <"*Flags related to behavior. (en)">
+				>
+				["at0032"] = <
+					text = <"*research (en)">
+					description = <"*Flags related to research. (en)">
+				>
+				["at0033"] = <
+					text = <"*advance-directive (en)">
+					description = <"*Flags related to subject's advance directives. (en)">
+				>
+				["at0034"] = <
+					text = <"*safety (en)">
+					description = <"*Flags related to safety precautions. (en)">
+				>
+				["at0035"] = <
+					text = <"Gültigkeitszeitraum Beginn">
+					description = <"Das Datum und die Uhrzeit, ab denen dieses Flag gültig ist. Dieses Feld ist obligatorisch und sollte mindestens mit dem aktuellen Datum und der aktuellen Uhrzeit (Datetime.now(yyyy-MM-ddThh:mm
+)) oder einem früheren Zeitpunkt befüllt werden. Zukünftige Daten sind ohne Warnungen zulässig.">
+				>
+				["at0036"] = <
+					text = <"Gültigkeitszeitraum Ende">
+					description = <"Das Datum und die Uhrzeit, bis zu denen dieses Flag gültig ist. Dieses Feld ist optional und muss später als der \"Gültigkeitszeitraum Beginn\" sein. Wenn ein zukünftiges Datum gesetzt wird, soll der Benutzer darauf hingewiesen werden, dass der Wert in der Zukunft liegt und das Flag bis dahin als \"aktiv\" gilt. Wenn der Status auf \"inaktiv\" oder \"irrtümlich eingetragen\" gesetzt wird, soll dieses Feld mit dem Datum der jeweiligen Aktualisierung befüllt werden.">
+				>
+				["at0037"] = <
+					text = <"Kohorte">
+					description = <"Dieses Feld ist in der FHIR R5-Ressource Flag nicht verfügbar und gibt die Kohorte oder Gruppe an, auf die dieses Flag zutrifft. Dies könnte Informationen zu einem Studienmedikament, einer klinischen Studie, Quarantänemaßnahmen oder anderen relevanten Gruppierungen umfassen, bei denen solche Informationen für die Patientenversorgung und das Management entscheidend sind.">
+				>
+				["at0038"] = <
+					text = <"Geplante Überprüfung">
+					description = <"Das nächste Datum und die Uhrzeit, zu denen dieses Flag überprüft werden soll. Dieses Feld ist optional. Wenn es gesetzt ist, gibt es an, wann die Flagge überprüft werden soll, um ihre fortlaufende Relevanz zu validieren. Diese Überprüfung ist nur erforderlich, wenn das Flag auf \"aktiv\" gesetzt ist. Nach der Überprüfung kann dieses Feld mit einem neuen Datum und einer neuen Uhrzeit aktualisiert oder leer gelassen werden.">
+				>
+				["at0039"] = <
+					text = <"Kommentar">
+					description = <"Ermöglicht die Eingabe von beliebigen unstrukturierten Daten oder Notizen, die nicht durch die anderen angegebenen Attribute abgedeckt sind. Dieses Feld bietet Flexibilität, um zusätzliche relevante Informationen oder Kontext zum Flag zu dokumentieren.">
+				>
+				["at0040"] = <
+					text = <"Zusätzliche Details">
+					description = <"Ermöglicht die Eingabe von strukturierten Daten, die nicht durch die anderen angegebenen Attribute abgedeckt sind. Dieses Feld bietet die Möglichkeit, zusätzliche strukturierte Informationen zu erfassen, die für das Flag relevant sind, aber nicht in die bestehenden Felder passen.">
+				>
+			>
+		>
+	>
